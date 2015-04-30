@@ -116,8 +116,8 @@ public:
     DataObject();
     ~DataObject();
 
-    bool equals(DataObject *obj) const;
-    void updateFrom(DataObject *obj);
+    virtual bool equals(DataObject *obj) const;
+    virtual void updateFrom(DataObject *obj);
     DataObject* clone();
 
 protected:

@@ -17,7 +17,7 @@ bool DataObject::equals(DataObject *obj) const
     {
         auto equals = true;
 
-        for(auto i = 2; i < metaObject1->propertyCount(); i++)
+        for(auto i = 1; i < metaObject1->propertyCount(); i++)
         {
             QString tName(metaObject1->property(i).typeName());
             auto pName = metaObject1->property(i).name();

@@ -28,6 +28,9 @@ public:
     void addContext(DataContext *context);
     void removeContext(DataContext * context);
 
+    virtual bool equals(DataObject *obj) const override;
+    virtual void updateFrom(DataObject *obj) override;
+
 private:
     QList<DataContext*> _contexts;
 };

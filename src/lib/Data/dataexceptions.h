@@ -68,5 +68,12 @@ public:
     ~CouldNotOpenStorageFileForRead(){}
 };
 
+class TypeNotRegisteredException : public DataObjectException
+{
+public:
+    TypeNotRegisteredException(){}
+    ~TypeNotRegisteredException(){}
+};
+
 #endif // DATAEXCEPTIONS
 

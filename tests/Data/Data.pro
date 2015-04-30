@@ -17,7 +17,9 @@ TEMPLATE = app
 SOURCES += \
     testcontextobject1.cpp \
     testcontextobject2.cpp \
-    tst_contextobject.cpp
+    testdataobject1.cpp \
+    testdataobject2.cpp \
+    tst_dataobject.cpp
 DEFINES += SRCDIR=\\\"$$PWD/\\\"
 
 unix {
@@ -37,4 +39,6 @@ DEPENDPATH += $$PWD/../../src/lib/
 
 HEADERS += \
     testcontextobject1.h \
-    testcontextobject2.h
+    testcontextobject2.h \
+    testdataobject1.h \
+    testdataobject2.h

@@ -2,6 +2,7 @@
 #define DATAOBJECTFACTORY_H
 
 #include <QtCore>
+#include "dataexceptions.h"
 
 class DataObject;
 
@@ -13,6 +14,7 @@ public:
     static QMap<QString, DataObject*(*)()> typeMap;
 
     static DataObject * createInstance(const QString &s);
+    static bool hasType(const QString &s);
 };
 
 #endif // DATAOBJECTFACTORY_H
