@@ -88,7 +88,7 @@ void XmlStorageContext::createDomElementFor(QDomDocument &doc, const QUuid &id, 
     auto element = doc.createElement(this->hash.value(id)->metaObject()->className());
     root.appendChild(element);
 
-    DataObject *obj = this->hash.value(id);
+    ContextObject *obj = this->hash.value(id);
     auto metaObject = obj->metaObject();
     for(auto i = 1; i < metaObject->propertyCount(); i++)
     {
@@ -97,7 +97,7 @@ void XmlStorageContext::createDomElementFor(QDomDocument &doc, const QUuid &id, 
 
         if(tName.endsWith("*"))
         {
-            auto fObj = (DataObject*)obj->property(pName).value<DataObject*>();
+            auto fObj = (ContextObject*)obj->property(pName).value<ContextObject*>();
             element.setAttribute(pName, fObj->id().toString());
 
             if(createSubs)
@@ -111,7 +111,7 @@ void XmlStorageContext::createDomElementFor(QDomDocument &doc, const QUuid &id, 
             QSequentialIterable iterable = obj->property(pName).value<QSequentialIterable>();
             foreach(const QVariant& item, iterable)
             {
-                auto fObj = item.value<DataObject*>();
+                auto fObj = item.value<ContextObject*>();
                 auto rElement = doc.createElement("ref");
                 rElement.setAttribute("id", fObj->id().toString());
                 pElement.appendChild(rElement);
@@ -153,7 +153,7 @@ void XmlStorageContext::onUpdateAll()
     }
 }
 
-DataObject *XmlStorageContext::onGet(const QUuid &id)
+ContextObject *XmlStorageContext::onGet(const QUuid &id)
 {
     QMutexLocker(&this->mutex);
     if(!this->hash.contains(id))

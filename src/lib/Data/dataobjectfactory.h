@@ -4,16 +4,15 @@
 #include <QtCore>
 
 class DataObject;
-class DataContext;
 
-template<typename T> DataObject * createDataObjectInstance(DataContext *context) { return new T(context); }
+template<typename T> DataObject * createDataObjectInstance() { return new T(); }
 
 class DataObjectFactory
 {
 public:
-    static QMap<QString, DataObject*(*)(DataContext*)> typeMap;
+    static QMap<QString, DataObject*(*)()> typeMap;
 
-    static DataObject * createInstance(const QString &s, DataContext *context);
+    static DataObject * createInstance(const QString &s);
 };
 
 #endif // DATAOBJECTFACTORY_H

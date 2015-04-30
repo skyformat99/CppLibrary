@@ -4,7 +4,7 @@
 #include <QtCore>
 
 #include "dataexceptions.h"
-#include "dataobject.h"
+#include "contextobject.h"
 #include "datacontextmanager.h"
 
 class DataContext
@@ -13,17 +13,17 @@ public:
     DataContext();
     virtual ~DataContext();
 
-    void add(DataObject* obj);
+    void add(ContextObject* obj);
     void remove(const QUuid &id);
-    DataObject* get(const QUuid &id);
+    ContextObject* get(const QUuid &id);
 
 protected:
-    QHash<QUuid, DataObject*> hash;
+    QHash<QUuid, ContextObject*> hash;
     mutable QMutex mutex;
 
-    virtual void onAdd(DataObject *obj);
+    virtual void onAdd(ContextObject *obj);
     virtual void onRemove(const QUuid &id);
-    virtual DataObject* onGet(const QUuid &id);
+    virtual ContextObject* onGet(const QUuid &id);
 
 private:
     QUuid _id;  // we need this for now just for debugging reasons

@@ -5,8 +5,6 @@
 #include "dataexceptions.h"
 #include "dataobjectfactory.h"
 
-class DataContext;
-
 // macro that autoexecutes constructor registration
 #define DATAOBJECT_REGISTER(name) \
     class regHelper##name { public: regHelper##name() { name::reg(); } ~regHelper##name(){}}; \
@@ -114,21 +112,16 @@ class DataContext;
 class DataObject : public QObject
 {
     Q_OBJECT
-    VALUE_PROPERTY(QUuid, id, QUuid())    // each object has an unique identifier
 public:
-    DataObject(DataContext *context);
+    DataObject();
     ~DataObject();
 
     bool equals(DataObject *obj) const;
     void updateFrom(DataObject *obj);
-    void addContext(DataContext *context);
-    void removeContext(DataContext * context);
+    DataObject* clone();
 
 protected:
     mutable QMutex mutex;
-
-private:
-    QList<DataContext*> _contexts;
 
 signals:
     // properties are implementing the PropertyChanging and PropertyChanged pattern known from .NET aside of the Changed pattern from Qt which you should prefer

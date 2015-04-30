@@ -1,17 +1,11 @@
 #include "dataobject.h"
-#include "datacontext.h"
 
-DataObject::DataObject(DataContext* context) : QObject(0)
+DataObject::DataObject() : QObject(0)
 {
-    this->set_id(QUuid::createUuid());
-
-    this->addContext(context);
 }
 
 DataObject::~DataObject()
 {
-    foreach(DataContext *context, this->_contexts)
-        context->remove(this->id());
 }
 
 bool DataObject::equals(DataObject *obj) const
@@ -64,37 +58,23 @@ void DataObject::updateFrom(DataObject *obj)
 
     if(metaObject1->className() == metaObject2->className())
     {
-        if(this->property("id") == obj->property("id"))
+        for(auto i = 1; i < metaObject1->propertyCount(); i++)
         {
-            for(auto i = 2; i < metaObject1->propertyCount(); i++)
-            {
-                auto pName = metaObject1->property(i).name();
+            auto pName = metaObject1->property(i).name();
 
-                this->setProperty(pName, obj->property(pName));
-            }
+            this->setProperty(pName, obj->property(pName));
         }
-        else throw(new IdNotMatchingException());
     }
     else throw(new TypeNotMatchingException());
 }
 
-void DataObject::addContext(DataContext *context)
+DataObject* DataObject::clone()
 {
-    if(!this->_contexts.contains(context))
-    {
-        QMutexLocker(&this->mutex);
-        this->_contexts.append(context);
-        context->add(this);
-    }
-}
+    auto metaObject = this->metaObject();
+    auto obj = DataObjectFactory::createInstance(metaObject->className());
 
-void DataObject::removeContext(DataContext *context)
-{
-    if(this->_contexts.contains(context))
-    {
-        QMutexLocker(&this->mutex);
-        this->_contexts.removeOne(context);
-        context->remove(this->id());
-    }
+    obj->updateFrom(this);
+
+    return obj;
 }
 

@@ -19,7 +19,9 @@ SOURCES += \
     datacontext.cpp \
     storagecontext.cpp \
     xmlstoragecontext.cpp \
-    dataobjectfactory.cpp
+    dataobjectfactory.cpp \
+    contextobject.cpp \
+    contextobjectfactory.cpp
 
 HEADERS += data.h\
     data_global.h \
@@ -29,7 +31,9 @@ HEADERS += data.h\
     dataexceptions.h \
     storagecontext.h \
     xmlstoragecontext.h \
-    dataobjectfactory.h
+    dataobjectfactory.h \
+    contextobject.h \
+    contextobjectfactory.h
 
 DESTDIR=../../../lib
 

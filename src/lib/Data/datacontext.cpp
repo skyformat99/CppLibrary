@@ -21,7 +21,7 @@ DataContext::~DataContext()
     }
 }
 
-void DataContext::add(DataObject *obj)
+void DataContext::add(ContextObject *obj)
 {
     if(!this->hash.contains(obj->id()))
     {
@@ -30,9 +30,9 @@ void DataContext::add(DataObject *obj)
     }
 }
 
-void DataContext::onAdd(DataObject *obj)
+void DataContext::onAdd(ContextObject *obj)
 {
-    qDebug() << "datacontext" << this->_id << ": adding data object" << obj->id();
+    qDebug() << "datacontext" << this->_id << ": adding context object" << obj->id();
     this->hash.insert(obj->id(), obj);
     obj->addContext(this);
 }
@@ -48,7 +48,7 @@ void DataContext::remove(const QUuid &id)
 
 void DataContext::onRemove(const QUuid &id)
 {
-    qDebug() << "datacontext" << this->_id << ": removing data object" << id;
+    qDebug() << "datacontext" << this->_id << ": removing context object" << id;
 
     auto obj = this->hash.take(id);
     obj->removeContext(this);
@@ -69,13 +69,13 @@ void DataContext::onRemove(const QUuid &id)
     }
 }
 
-DataObject* DataContext::get(const QUuid &id)
+ContextObject* DataContext::get(const QUuid &id)
 {
     QMutexLocker(&this->mutex);
     return this->onGet(id);
 }
 
-DataObject* DataContext::onGet(const QUuid &id)
+ContextObject* DataContext::onGet(const QUuid &id)
 {
     return this->hash.value(id, 0);
 }

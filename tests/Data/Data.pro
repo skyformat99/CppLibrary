@@ -8,15 +8,16 @@ QT       += testlib xml
 
 QT       -= gui
 
-TARGET = tst_datatest
+TARGET = tst_datatests
 CONFIG   += console
 CONFIG   -= app_bundle
 
 TEMPLATE = app
 
-SOURCES += tst_datatest.cpp \
-    testdataobject1.cpp \
-    testdataobject2.cpp
+SOURCES += \
+    testcontextobject1.cpp \
+    testcontextobject2.cpp \
+    tst_contextobject.cpp
 DEFINES += SRCDIR=\\\"$$PWD/\\\"
 
 unix {
@@ -35,5 +36,5 @@ INCLUDEPATH += $$PWD/../../lib/include/
 DEPENDPATH += $$PWD/../../src/lib/
 
 HEADERS += \
-    testdataobject1.h \
-    testdataobject2.h
+    testcontextobject1.h \
+    testcontextobject2.h

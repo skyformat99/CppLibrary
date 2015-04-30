@@ -16,7 +16,7 @@ protected:
     virtual void onSaveAll() override;
     virtual void onUpdate(const QUuid &id) override;
     virtual void onUpdateAll() override;
-    virtual DataObject *onGet(const QUuid &id) override;
+    virtual ContextObject *onGet(const QUuid &id) override;
 
 private:
     QFile &_file;

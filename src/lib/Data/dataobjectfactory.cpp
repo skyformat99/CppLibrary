@@ -1,7 +1,7 @@
 #include "dataobjectfactory.h"
 
-QMap<QString, DataObject*(*)(DataContext*)> DataObjectFactory::typeMap;
-DataObject * DataObjectFactory::createInstance(const QString &s, DataContext *context)
+QMap<QString, DataObject*(*)()> DataObjectFactory::typeMap;
+DataObject * DataObjectFactory::createInstance(const QString &s)
 {
-    return DataObjectFactory::typeMap[s](context);
+    return DataObjectFactory::typeMap[s]();
 }
