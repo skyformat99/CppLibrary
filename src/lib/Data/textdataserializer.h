@@ -1,0 +1,5 @@
+#ifndef TEXTSERIALIZER
+#define TEXTSERIALIZER
+
+#endif // TEXTSERIALIZER
+
