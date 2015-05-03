@@ -10,15 +10,15 @@ public:
     StorageContext();
     ~StorageContext();
 
-    void save(const QUuid &id);
+    void save(const QUuid& id);
     void saveAll();
-    void update(const QUuid &id);
+    void update(const QUuid& id);
     void updateAll();
 
 protected:
-    virtual void onSave(const QUuid &id) = 0;
+    virtual void onSave(const QUuid& id) = 0;
     virtual void onSaveAll() = 0;
-    virtual void onUpdate(const QUuid &id) = 0;
+    virtual void onUpdate(const QUuid& id) = 0;
     virtual void onUpdateAll() = 0;
 };
 

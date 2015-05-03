@@ -6,15 +6,15 @@
 
 class DataObject;
 
-template<typename T> DataObject * createDataObjectInstance() { return new T(); }
+template<typename T> DataObject* createDataObjectInstance() { return new T(); }
 
 class DataObjectFactory
 {
 public:
-    static QMap<QString, DataObject*(*)()> typeMap;
+    static QMap<QString, DataObject* (*)()> typeMap;
 
-    static DataObject * createInstance(const QString &s);
-    static bool hasType(const QString &s);
+    static DataObject* createInstance(const QString& s);
+    static bool contains(const QString& s);
 };
 
 #endif // DATAOBJECTFACTORY_H

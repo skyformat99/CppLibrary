@@ -22,14 +22,14 @@ class ContextObject : public DataObject
     VALUE_PROPERTY(QUuid, id, QUuid())    // each contextobject has an unique identifier
 
 public:
-    ContextObject(DataContext *context);
+    ContextObject(DataContext* context);
     ~ContextObject();
 
-    void addContext(DataContext *context);
-    void removeContext(DataContext * context);
+    void addContext(DataContext& context);
+    void removeContext(DataContext& context);
 
-    virtual bool equals(DataObject *obj) const override;
-    virtual void updateFrom(DataObject *obj) override;
+    virtual bool equals(DataObject& obj) const override;
+    virtual void updateFrom(DataObject& obj) override;
 
 private:
     QList<DataContext*> _contexts;

@@ -10,7 +10,7 @@ StorageContext::~StorageContext()
 
 }
 
-void StorageContext::save(const QUuid &id)
+void StorageContext::save(const QUuid& id)
 {
     if(this->hash.contains(id))
     {
@@ -26,7 +26,7 @@ void StorageContext::saveAll()
     this->onSaveAll();
 }
 
-void StorageContext::update(const QUuid &id)
+void StorageContext::update(const QUuid& id)
 {
     if(this->hash.contains(id))
     {

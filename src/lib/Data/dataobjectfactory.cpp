@@ -1,18 +1,18 @@
 #include "dataobjectfactory.h"
 #include "contextobjectfactory.h"
 
-QMap<QString, DataObject*(*)()> DataObjectFactory::typeMap;
-DataObject * DataObjectFactory::createInstance(const QString &s)
+QMap<QString, DataObject* (*)()> DataObjectFactory::typeMap;
+DataObject* DataObjectFactory::createInstance(const QString& s)
 {
-    if(DataObjectFactory::hasType(s))
+    if(DataObjectFactory::contains(s))
         return DataObjectFactory::typeMap[s]();
-    else if(ContextObjectFactory::hasType(s))
+    else if(ContextObjectFactory::contains(s))
         return (DataObject*)ContextObjectFactory::createInstance(s, NULL);
     else
         throw(new TypeNotRegisteredException());
 }
 
-bool DataObjectFactory::hasType(const QString &s)
+bool DataObjectFactory::contains(const QString& s)
 {
-    return DataObjectFactory::typeMap.contains(s) || ContextObjectFactory::hasType(s);
+    return DataObjectFactory::typeMap.contains(s) || ContextObjectFactory::contains(s);
 }

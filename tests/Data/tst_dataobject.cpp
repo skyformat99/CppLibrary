@@ -147,8 +147,8 @@ void DataObjectTests::testDataObjectEquals()
     dO3->set_p2(2);
     dO3->set_p3(1.1);
 
-    QVERIFY2(dO1->equals(dO2), "objects with same content weren't detected as equal");
-    QVERIFY2(!dO1->equals(dO3), "objects with different content were detected as equal");
+    QVERIFY2(dO1->equals(*dO2), "objects with same content weren't detected as equal");
+    QVERIFY2(!dO1->equals(*dO3), "objects with different content were detected as equal");
 
     delete dO1;
     delete dO2;
@@ -276,8 +276,8 @@ void DataObjectTests::testContextObjectEquals()
     dO3->set_p3(1.1);
 
     // cast to dataobject so we can test override, if wrong equals is executed it will fail because of the id
-    QVERIFY2(((DataObject *)dO1)->equals(dO2), "objects with same content weren't detected as equal");
-    QVERIFY2(!((DataObject *)dO1)->equals(dO3), "objects with different content were detected as equal");
+    QVERIFY2(((DataObject *)dO1)->equals(*dO2), "objects with same content weren't detected as equal");
+    QVERIFY2(!((DataObject *)dO1)->equals(*dO3), "objects with different content were detected as equal");
 
     delete context;
 }

@@ -7,15 +7,15 @@
 class ContextObject;
 class DataContext;
 
-template<typename T> ContextObject * createContextObjectInstance(DataContext *context) { return new T(context); }
+template<typename T> ContextObject* createContextObjectInstance(DataContext* context) { return new T(context); }
 
 class ContextObjectFactory
 {
 public:
-    static QMap<QString, ContextObject*(*)(DataContext*)> typeMap;
+    static QMap<QString, ContextObject* (*)(DataContext*)> typeMap;
 
-    static ContextObject * createInstance(const QString &s, DataContext *context);
-    static bool hasType(const QString &s);
+    static ContextObject* createInstance(const QString& s, DataContext* context);
+    static bool contains(const QString& s);
 };
 
 #endif // CONTEXTOBJECTFACTORY_H

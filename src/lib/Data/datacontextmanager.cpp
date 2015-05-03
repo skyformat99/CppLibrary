@@ -10,21 +10,21 @@ DataContextManager::~DataContextManager()
 }
 
 DataContextManager DataContextManager::s_instance;
-DataContextManager* DataContextManager::instance()
+DataContextManager& DataContextManager::instance()
 {
-    return &DataContextManager::s_instance;
+    return DataContextManager::s_instance;
 }
 
-void DataContextManager::add(DataContext *context)
+void DataContextManager::add(DataContext& context)
 {
     QMutexLocker(&this->_mutex);
-    this->_contexts.append(context);
+    this->_contexts.append(&context);
 }
 
-void DataContextManager::remove(DataContext *context)
+void DataContextManager::remove(DataContext& context)
 {
     QMutexLocker(&this->_mutex);
-    this->_contexts.removeOne(context);
+    this->_contexts.removeOne(&context);
 }
 
 QList<DataContext*> DataContextManager::getAll() const

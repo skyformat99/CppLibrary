@@ -13,17 +13,17 @@ public:
     DataContext();
     virtual ~DataContext();
 
-    void add(ContextObject* obj);
-    void remove(const QUuid &id);
-    ContextObject* get(const QUuid &id);
+    void add(ContextObject& obj);
+    void remove(const QUuid& id);
+    ContextObject* get(const QUuid& id);
 
 protected:
     QHash<QUuid, ContextObject*> hash;
     mutable QMutex mutex;
 
-    virtual void onAdd(ContextObject *obj);
-    virtual void onRemove(const QUuid &id);
-    virtual ContextObject* onGet(const QUuid &id);
+    virtual void onAdd(ContextObject& obj);
+    virtual void onRemove(const QUuid& id);
+    virtual ContextObject* onGet(const QUuid& id);
 
 private:
     QUuid _id;  // we need this for now just for debugging reasons

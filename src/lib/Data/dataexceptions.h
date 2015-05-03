@@ -34,7 +34,7 @@ public:
 class ObjectWithSameIdAlreadyInDataContextException : public DataContextException
 {
 public:
-    ObjectWithSameIdAlreadyInDataContextException(const QUuid &id){this->_id = id;}
+    ObjectWithSameIdAlreadyInDataContextException(const QUuid& id){this->_id = id;}
     ~ObjectWithSameIdAlreadyInDataContextException(){}
 
     QUuid id(){return this->_id;}
@@ -45,7 +45,7 @@ private:
 class ObjectNotFoundInDataContextException : public DataContextException
 {
 public:
-    ObjectNotFoundInDataContextException(const QUuid &id){this->_id = id;}
+    ObjectNotFoundInDataContextException(const QUuid& id){this->_id = id;}
     ~ObjectNotFoundInDataContextException(){}
 
     QUuid id(){return this->_id;}

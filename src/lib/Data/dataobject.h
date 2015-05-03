@@ -51,11 +51,11 @@
     Q_SIGNAL void name##Changed(); \
     Q_SIGNAL void name##Loading(); \
     private: \
-        type *_##name = 0; \
+        type* _##name = 0; \
         bool _##name##Loaded = false; \
         mutable QMutex _mutex_##name; \
     public: \
-        type *name() \
+        type* name() \
         { \
             if(!this->_##name##Loaded) { emit name##Loading(); this->_##name##Loaded = true; } \
             \
@@ -64,7 +64,7 @@
             return this->_##name; \
         } \
         \
-        Q_SLOT void set_##name(type *value) \
+        Q_SLOT void set_##name(type* value) \
         { \
             this->mutex.lock(); this->mutex.unlock(); \
             QMutexLocker(&this->_mutex_##name); \
@@ -116,8 +116,8 @@ public:
     DataObject();
     ~DataObject();
 
-    virtual bool equals(DataObject *obj) const;
-    virtual void updateFrom(DataObject *obj);
+    virtual bool equals(DataObject& obj) const;
+    virtual void updateFrom(DataObject& obj);
     DataObject* clone();
 
 protected:
@@ -125,8 +125,8 @@ protected:
 
 signals:
     // properties are implementing the PropertyChanging and PropertyChanged pattern known from .NET aside of the Changed pattern from Qt which you should prefer
-    void propertyChanging(const QString &propertyName);
-    void propertyChanged(const QString &propertyName);
+    void propertyChanging(const QString& propertyName);
+    void propertyChanged(const QString& propertyName);
 };
 
 #endif // DATAOBJECT_H

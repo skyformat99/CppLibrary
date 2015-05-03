@@ -11,10 +11,10 @@ public:
     DataContextManager();
     ~DataContextManager();
 
-    static DataContextManager* instance();
+    static DataContextManager& instance();
 
-    void add(DataContext* context);
-    void remove(DataContext* context);
+    void add(DataContext& context);
+    void remove(DataContext& context);
     QList<DataContext*> getAll() const;
 
 private:

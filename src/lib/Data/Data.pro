@@ -21,7 +21,8 @@ SOURCES += \
     xmlstoragecontext.cpp \
     dataobjectfactory.cpp \
     contextobject.cpp \
-    contextobjectfactory.cpp
+    contextobjectfactory.cpp \
+    xmldataserializer.cpp
 
 HEADERS += data.h\
     data_global.h \
@@ -33,7 +34,9 @@ HEADERS += data.h\
     xmlstoragecontext.h \
     dataobjectfactory.h \
     contextobject.h \
-    contextobjectfactory.h
+    contextobjectfactory.h \
+    textdataserializer.h \
+    xmldataserializer.h
 
 DESTDIR=../../../lib
 
