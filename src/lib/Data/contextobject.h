@@ -35,4 +35,6 @@ private:
     QList<DataContext*> _contexts;
 };
 
+Q_DECLARE_METATYPE(ContextObject*)
+
 #endif // CONTEXTOBJECT_H

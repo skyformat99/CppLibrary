@@ -16,6 +16,8 @@ class TestDataObject1 : public DataObject
     VALUE_PROPERTY(QUuid, p4, QUuid())
     OBJECT_PROPERTY(TestDataObject2, subobj)
     NOBJECTS_PROPERTY(TestDataObject2, nsubobjs)
+    NVALUES_PROPERTY(int, nints);
+    NVALUES_PROPERTY(QString, nstrings);
 public:
     TestDataObject1();
     ~TestDataObject1();

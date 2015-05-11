@@ -9,7 +9,6 @@
 #include "datacontext.h"
 #include "dataexceptions.h"
 #include "storagecontext.h"
-#include "textdataserializer.h"
 #include "xmldataserializer.h"
 #include "xmlstoragecontext.h"
 

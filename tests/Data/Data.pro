@@ -42,3 +42,5 @@ HEADERS += \
     testcontextobject2.h \
     testdataobject1.h \
     testdataobject2.h
+
+CONFIG(release, debug|release):DEFINES += QT_NO_DEBUG_OUTPUT

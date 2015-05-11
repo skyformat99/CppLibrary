@@ -35,7 +35,6 @@ HEADERS += data.h\
     dataobjectfactory.h \
     contextobject.h \
     contextobjectfactory.h \
-    textdataserializer.h \
     xmldataserializer.h
 
 DESTDIR=../../../lib
@@ -70,3 +69,5 @@ win32: {
 win32-g++: {
     QMAKE_CXXFLAGS += -std=c++14
 }
+
+CONFIG(release, debug|release):DEFINES += QT_NO_DEBUG_OUTPUT

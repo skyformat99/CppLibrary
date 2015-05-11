@@ -20,6 +20,7 @@ private Q_SLOTS:
     void testDataObjectValueProperties();
     void testDataObjectObjectProperties();
     void testDataObjectNobjectsProperties();
+    void testDataObjectNvaluesProperties();
     void testDataObjectDynSignals();
     void testDataObjectEquals();
     void testXmlSerializer();
@@ -113,6 +114,32 @@ void DataObjectTests::testDataObjectNobjectsProperties()
     delete dO2;
 }
 
+void DataObjectTests::testDataObjectNvaluesProperties()
+{
+    auto dO1 = new TestDataObject1();
+    dO1->set_p1("ralph");
+
+    auto list1 = dO1->nints();
+    list1.append(0);
+    list1.append(1);
+    list1.append(2);
+    dO1->set_nints(list1);
+
+    auto list2 = dO1->nstrings();
+    list2.append("bla");
+    list2.append("ble");
+    list2.append("bli");
+    dO1->set_nstrings(list2);
+
+    auto list3 = dO1->property("nints").value<QList<int>>();
+    auto list4 = dO1->property("nstrings").value<QList<QString>>();
+
+    QVERIFY2(list3.length() == 3 && list4.length() == 3, "list length is not 3");
+    QVERIFY2(list3.at(2) == 2 && list4.at(2) == "bli", "list not set correctly");
+
+    delete dO1;
+}
+
 void DataObjectTests::testDataObjectDynSignals()
 {
     this->_slotCalled = false;
@@ -156,7 +183,46 @@ void DataObjectTests::testDataObjectEquals()
 
 void DataObjectTests::testXmlSerializer()
 {
-    QFile file("test.xml");
+    auto dO1 = new TestDataObject1();
+    dO1->set_p1("ralph");
+    dO1->set_p2(2);
+    dO1->set_p3(1.1);
+
+    auto dO2 = new TestDataObject2();
+    dO2->set_p1("franzi");
+
+    dO1->set_subobj(dO2);
+
+    auto list1 = dO1->nsubobjs();
+    list1.append(dO2);
+    dO1->set_nsubobjs(list1);
+
+    auto list2 = dO1->nints();
+    list2.append(0);
+    list2.append(1);
+    list2.append(2);
+    dO1->set_nints(list2);
+
+    auto list3 = dO1->nstrings();
+    list3.append("bla");
+    list3.append("ble");
+    list3.append("bli");
+    dO1->set_nstrings(list3);
+
+    XmlDataSerializer ser;
+
+    auto xml = ser.Serialize(*dO1);
+
+    //qDebug() << xml;  // uncomment, see and replace below if testobjects changed and therefor the resulting xml
+    QString temp("<TestDataObject1><p1>ralph</p1><p2>2</p2><p3>1.1</p3><p4>{00000000-0000-0000-0000-000000000000}</p4><subobj><TestDataObject2><p1>franzi</p1></TestDataObject2></subobj><nsubobjs><TestDataObject2><p1>franzi</p1></TestDataObject2></nsubobjs><nints><int>0</int><int>1</int><int>2</int></nints><nstrings><QString>bla</QString><QString>ble</QString><QString>bli</QString></nstrings></TestDataObject1>");
+
+    QVERIFY2(xml.replace("\r", "", Qt::CaseSensitive).replace("\n", "", Qt::CaseSensitive).replace(" ", "", Qt::CaseSensitive) == temp, "Generated xml does not match the template");
+
+    auto dO3 = ser.Deserialize(temp);
+
+    delete dO1;
+    delete dO2;
+    delete dO3;
 }
 
 void DataObjectTests::testContextObjectFactory()
