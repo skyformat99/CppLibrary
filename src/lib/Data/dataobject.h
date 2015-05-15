@@ -128,6 +128,12 @@
             QMutexLocker(&this->_mutex_##name); \
             return this->_##name; \
         } \
+        QList<QVariant> g_##name() \
+        { \
+            QVariant var; \
+            var.setValue<QList<type>>(this->name()); \
+            return var.toList(); \
+        } \
         Q_SLOT void set_##name(QList<type> value) \
         { \
             this->mutex.lock(); this->mutex.unlock(); \
@@ -137,7 +143,18 @@
             emit propertyChanged(#name); \
             emit name##Changed(); \
         } \
-    Q_PROPERTY(QList<type> name READ name WRITE set_##name NOTIFY name##Changed)
+        Q_SLOT void g_set_##name(QList<QVariant> value) \
+        { \
+            this->mutex.lock(); this->mutex.unlock(); \
+            QMutexLocker(&this->_mutex_##name); \
+            emit propertyChanging(#name); \
+            this->_##name.clear(); \
+            foreach(QVariant var, value) this->_##name.append(var.value<type>()); \
+            emit propertyChanged(#name); \
+            emit name##Changed(); \
+        } \
+    Q_PROPERTY(QList<type> name READ name WRITE set_##name NOTIFY name##Changed) \
+    Q_PROPERTY(QList<QVariant> __g_##name READ g_##name WRITE g_set_##name NOTIFY name##Changed)
 
 class DataObject : public QObject
 {

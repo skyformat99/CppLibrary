@@ -60,37 +60,40 @@ void XmlDataSerializer::SerializeContent(DataObject& obj, QDomDocument& doc, QDo
         auto pName = metaObject->property(i).name();
         auto prop = doc.createElement(pName);
 
-        if(tName.endsWith("*"))
+        if(!QString(pName).startsWith("__g_"))
         {
-            DataObject& fObj = *obj.property(pName).value<DataObject*>();
-            this->Serialize(fObj, doc, prop);
-        }
-        else if(tName.startsWith("QList<"))
-        {
-            auto isRef = tName.endsWith("*>");
-            QSequentialIterable iterable = obj.property(pName).value<QSequentialIterable>();
-            foreach(const QVariant& item, iterable)
+            if(tName.endsWith("*"))
             {
-                if(isRef)
+                DataObject& fObj = *obj.property(pName).value<DataObject*>();
+                this->Serialize(fObj, doc, prop);
+            }
+            else if(tName.startsWith("QList<"))
+            {
+                auto isRef = tName.endsWith("*>");
+                QSequentialIterable iterable = obj.property(pName).value<QSequentialIterable>();
+                foreach(const QVariant& item, iterable)
                 {
-                    DataObject& fObj = *item.value<DataObject*>();
-                    this->Serialize(fObj, doc, prop);
-                }
-                else
-                {
-                    auto elem = doc.createElement(item.typeName());
-                    auto txt = doc.createTextNode(item.toString());
-                    elem.appendChild(txt);
-                    prop.appendChild(elem);
+                    if(isRef)
+                    {
+                        DataObject& fObj = *item.value<DataObject*>();
+                        this->Serialize(fObj, doc, prop);
+                    }
+                    else
+                    {
+                        auto elem = doc.createElement(item.typeName());
+                        auto txt = doc.createTextNode(item.toString());
+                        elem.appendChild(txt);
+                        prop.appendChild(elem);
+                    }
                 }
             }
+            else
+            {
+                auto txt = doc.createTextNode(obj.property(pName).toString());
+                prop.appendChild(txt);
+            }
+            node.appendChild(prop);
         }
-        else
-        {
-            auto txt = doc.createTextNode(obj.property(pName).toString());
-            prop.appendChild(txt);
-        }
-        node.appendChild(prop);
     }
 }
 
@@ -146,7 +149,7 @@ void XmlDataSerializer::DeserializeContent(QDomNode& node, DataObject& obj)
         auto cNode = nodes.at(i);
         auto pName = cNode.nodeName();
         auto var = obj.property(pName.toStdString().c_str());
-        if(var.isValid())
+        if(var.isValid() && !QString(pName).startsWith("__g_"))
         {
             QString tName(var.typeName());
 
@@ -177,7 +180,11 @@ void XmlDataSerializer::DeserializeContent(QDomNode& node, DataObject& obj)
                     }
                     else
                     {
-                        auto list = var.toList();
+                        auto gpName = pName;
+                        gpName.insert(0, "__g_");
+                        auto gvar = obj.property(gpName.toStdString().c_str());
+                        auto list = gvar.value<QList<QVariant>>();
+                        list.clear();
                         auto elemTypeId = QVariant::Invalid;
                         for(auto j = 0; j < rNodes.length(); j++)
                         {
@@ -194,10 +201,8 @@ void XmlDataSerializer::DeserializeContent(QDomNode& node, DataObject& obj)
                                 list.append(value);
                             }
                         }
-                        auto listTypeId = metaObject->property(metaObject->indexOfProperty(pName.toStdString().c_str())).type();
-                        auto nvar = QVariant(listTypeId);
-                        nvar.setValue(list);
-                        obj.setProperty(pName.toStdString().c_str(), nvar);
+                        auto nvar = QVariant(list);
+                        obj.setProperty(gpName.toStdString().c_str(), nvar);
                     }
                 }
             }

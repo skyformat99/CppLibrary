@@ -15,26 +15,14 @@ DEFINES += DATA_LIBRARY
 
 SOURCES += \
     dataobject.cpp \
-    datacontextmanager.cpp \
-    datacontext.cpp \
-    storagecontext.cpp \
-    xmlstoragecontext.cpp \
     dataobjectfactory.cpp \
-    contextobject.cpp \
-    contextobjectfactory.cpp \
     xmldataserializer.cpp
 
 HEADERS += data.h\
     data_global.h \
     dataobject.h \
-    datacontextmanager.h \
-    datacontext.h \
     dataexceptions.h \
-    storagecontext.h \
-    xmlstoragecontext.h \
     dataobjectfactory.h \
-    contextobject.h \
-    contextobjectfactory.h \
     xmldataserializer.h
 
 DESTDIR=../../../lib

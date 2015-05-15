@@ -5,11 +5,7 @@
 
 #include "dataobjectfactory.h"
 #include "dataobject.h"
-#include "datacontextmanager.h"
-#include "datacontext.h"
 #include "dataexceptions.h"
-#include "storagecontext.h"
 #include "xmldataserializer.h"
-#include "xmlstoragecontext.h"
 
 #endif // DATA_H
