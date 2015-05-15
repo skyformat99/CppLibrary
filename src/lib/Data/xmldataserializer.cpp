@@ -177,19 +177,26 @@ void XmlDataSerializer::DeserializeContent(QDomNode& node, DataObject& obj)
                     }
                     else
                     {
-                        QVariantList list = qvariant_cast<QVariantList>(var);
+                        auto list = var.toList();
+                        auto elemTypeId = QVariant::Invalid;
                         for(auto j = 0; j < rNodes.length(); j++)
                         {
                             auto rNode = rNodes.at(j);
                             auto etName = rNode.nodeName();
-                            auto txt = rNode.toElement().text();
-                            QVariant value(txt);
-                            value.convert(QVariant::nameToType(etName.toStdString().c_str()));
-                            list.append(value);
+                            if(elemTypeId == QVariant::Invalid)
+                                elemTypeId = QVariant::nameToType(etName.toStdString().c_str());
+
+                            if(elemTypeId != QVariant::Invalid)
+                            {
+                                auto txt = rNode.toElement().text();
+                                QVariant value(txt);
+                                value.convert(elemTypeId);
+                                list.append(value);
+                            }
                         }
-                        auto nvar = QVariant(list);
-                        auto listTypeId = metaObject->property(metaObject->indexOfProperty(pName.toStdString().c_str())).userType();
-                        nvar.convert(QVariant::nameToType(listTypeId));
+                        auto listTypeId = metaObject->property(metaObject->indexOfProperty(pName.toStdString().c_str())).type();
+                        auto nvar = QVariant(listTypeId);
+                        nvar.setValue(list);
                         obj.setProperty(pName.toStdString().c_str(), nvar);
                     }
                 }
