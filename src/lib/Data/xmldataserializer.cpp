@@ -126,7 +126,7 @@ DataObject* XmlDataSerializer::Deserialize(QFile& file)
 DataObject* XmlDataSerializer::Deserialize(QDomDocument& doc)
 {
     auto root = doc.firstChild();
-    auto obj = DataObjectFactory::createInstance(root.nodeName());
+    auto obj = DataObjectFactory::create(root.nodeName());
     this->DeserializeContent(root, *obj);
 
     return obj;
@@ -134,7 +134,7 @@ DataObject* XmlDataSerializer::Deserialize(QDomDocument& doc)
 
 DataObject* XmlDataSerializer::Deserialize(QDomNode& node)
 {
-    auto obj = DataObjectFactory::createInstance(node.nodeName());
+    auto obj = DataObjectFactory::create(node.nodeName());
     this->DeserializeContent(node, *obj);
 
     return obj;

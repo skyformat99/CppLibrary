@@ -1,7 +1,7 @@
 #include "dataobjectfactory.h"
 
 QMap<QString, DataObject* (*)()> DataObjectFactory::typeMap;
-DataObject* DataObjectFactory::createInstance(const QString& s)
+DataObject* DataObjectFactory::create(const QString& s)
 {
     if(DataObjectFactory::contains(s))
         return DataObjectFactory::typeMap[s]();

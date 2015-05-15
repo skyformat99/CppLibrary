@@ -34,7 +34,7 @@ DataObjectTests::DataObjectTests()
 
 void DataObjectTests::testDataObjectFactory()
 {
-    auto dO = DataObjectFactory::createInstance("TestDataObject1");
+    auto dO = DataObjectFactory::create("TestDataObject1");
     QVERIFY2(strcmp(dO->metaObject()->className(), "TestDataObject1") == 0, "Object metainformation doesn't match created type");
     delete dO;
 }

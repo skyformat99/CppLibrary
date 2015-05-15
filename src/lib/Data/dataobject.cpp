@@ -98,7 +98,7 @@ void DataObject::updateFrom(DataObject& obj)
 DataObject* DataObject::clone()
 {
     auto metaObject = this->metaObject();
-    auto obj = DataObjectFactory::createInstance(metaObject->className());
+    auto obj = DataObjectFactory::create(metaObject->className());
 
     obj->updateFrom(*this);
 

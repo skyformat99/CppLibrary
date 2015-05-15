@@ -13,7 +13,7 @@ class DataObjectFactory
 public:
     static QMap<QString, DataObject* (*)()> typeMap;
 
-    static DataObject* createInstance(const QString& s);
+    static DataObject* create(const QString& s);
     static bool contains(const QString& s);
 };
 
