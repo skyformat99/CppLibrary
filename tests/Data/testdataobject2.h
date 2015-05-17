@@ -8,7 +8,7 @@ class TestDataObject2 : public DataObject
 {
     Q_OBJECT
     DATAOBJECT(TestDataObject2)
-    VALUE_PROPERTY(QString, p1, "")
+    VAL_PROPERTY(QString, p1, "")
 public:
     TestDataObject2();
     ~TestDataObject2();

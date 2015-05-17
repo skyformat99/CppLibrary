@@ -10,22 +10,22 @@ DataObject::~DataObject()
 
 bool DataObject::equals(DataObject& obj) const
 {
-    auto metaObject1 = this->metaObject();
-    auto metaObject2 = obj.metaObject();
+    const QMetaObject* metaObject1 = this->metaObject();
+    const QMetaObject* metaObject2 = obj.metaObject();
 
     if(metaObject1->className() == metaObject2->className())
     {
-        auto equals = true;
+        bool equals = true;
 
-        for(auto i = 1; i < metaObject1->propertyCount(); i++)
+        for(int i = 1; i < metaObject1->propertyCount(); i++)
         {
             QString tName(metaObject1->property(i).typeName());
-            auto pName = metaObject1->property(i).name();
+            QString pName = metaObject1->property(i).name();
 
-            if(tName.endsWith("*"))
+            if(tName.startsWith("QSharedPointer<"))
             {
-                DataObject* tObj = this->property(pName).value<DataObject*>();
-                DataObject* oObj = obj.property(pName).value<DataObject*>();
+                QSharedPointer<DataObject> tObj = this->property(pName.toStdString().c_str()).value<QSharedPointer<DataObject>>();
+                QSharedPointer<DataObject> oObj = obj.property(pName.toStdString().c_str()).value<QSharedPointer<DataObject>>();
 
                 if(tObj != NULL && oObj != NULL)
                 {
@@ -36,19 +36,19 @@ bool DataObject::equals(DataObject& obj) const
                     equals = false;
                 }
             }
-            else if(tName.startsWith("QList"))
+            else if(tName.startsWith("QList<"))
             {
-                auto tIterable = this->property(pName).value<QSequentialIterable>();
-                auto oIterable = obj.property(pName).value<QSequentialIterable>();
+                QSequentialIterable tIterable = this->property(pName.toStdString().c_str()).value<QSequentialIterable>();
+                QSequentialIterable oIterable = obj.property(pName.toStdString().c_str()).value<QSequentialIterable>();
 
                 foreach(const QVariant& tItem, tIterable)
                 {
-                    auto tfObj = tItem.value<DataObject*>();
-                    auto found = false;
+                    QSharedPointer<DataObject> tfObj = tItem.value<QSharedPointer<DataObject>>();
+                    bool found = false;
 
                     foreach(const QVariant& oItem, oIterable)
                     {
-                        auto ofObj = oItem.value<DataObject*>();
+                        QSharedPointer<DataObject> ofObj = oItem.value<QSharedPointer<DataObject>>();
 
                         found = tfObj->equals(*ofObj); // TODO how to avoid a worst case crash at this point?
 
@@ -65,8 +65,8 @@ bool DataObject::equals(DataObject& obj) const
             }
             else
             {
-                auto value1 = this->property(pName);
-                auto value2 = obj.property(pName);
+                QVariant value1 = this->property(pName.toStdString().c_str());
+                QVariant value2 = obj.property(pName.toStdString().c_str());
                 equals = value1.toString() == value2.toString();
             }
 
@@ -80,25 +80,25 @@ bool DataObject::equals(DataObject& obj) const
 
 void DataObject::updateFrom(DataObject& obj)
 {
-    auto metaObject1 = this->metaObject();
-    auto metaObject2 = obj.metaObject();
+    const QMetaObject* metaObject1 = this->metaObject();
+    const QMetaObject* metaObject2 = obj.metaObject();
 
     if(metaObject1->className() == metaObject2->className())
     {
-        for(auto i = 1; i < metaObject1->propertyCount(); i++)
+        for(int i = 1; i < metaObject1->propertyCount(); i++)
         {
-            auto pName = metaObject1->property(i).name();
+            QString pName = metaObject1->property(i).name();
 
-            this->setProperty(pName, obj.property(pName));
+            this->setProperty(pName.toStdString().c_str(), obj.property(pName.toStdString().c_str()));
         }
     }
     else throw(new TypeNotMatchingException());
 }
 
-DataObject* DataObject::clone()
+QSharedPointer<DataObject> DataObject::clone()
 {
-    auto metaObject = this->metaObject();
-    auto obj = DataObjectFactory::create(metaObject->className());
+    const QMetaObject* metaObject = this->metaObject();
+    QSharedPointer<DataObject> obj(DataObjectFactory::create(metaObject->className()));
 
     obj->updateFrom(*this);
 

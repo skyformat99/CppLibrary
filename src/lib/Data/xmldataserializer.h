@@ -14,8 +14,8 @@ public:
     QString Serialize(DataObject& obj);
     void Serialize(DataObject& obj, QFile& file);
 
-    DataObject* Deserialize(QString& text);
-    DataObject* Deserialize(QFile& file);
+    QSharedPointer<DataObject> Deserialize(QString& text);
+    QSharedPointer<DataObject> Deserialize(QFile& file);
 
 private:
     void Serialize(DataObject& obj, QDomDocument& doc);

@@ -6,7 +6,7 @@
 
 class DataObject;
 
-template<typename T> DataObject* createDataObjectInstance() { return new T(); }
+template<typename T> DataObject* createDataObjectInstance() { return (DataObject*)(new T()); }
 
 class DataObjectFactory
 {

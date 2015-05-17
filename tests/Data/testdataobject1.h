@@ -10,14 +10,14 @@ class TestDataObject1 : public DataObject
 {
     Q_OBJECT
     DATAOBJECT(TestDataObject1)
-    VALUE_PROPERTY(QString, p1, "")
-    VALUE_PROPERTY(int, p2, 0)
-    VALUE_PROPERTY(double, p3, 0.0)
-    VALUE_PROPERTY(QUuid, p4, QUuid())
-    OBJECT_PROPERTY(TestDataObject2, subobj)
-    NOBJECTS_PROPERTY(TestDataObject2, nsubobjs)
-    NVALUES_PROPERTY(int, nints);
-    NVALUES_PROPERTY(QString, nstrings);
+    VAL_PROPERTY(QString, p1, "")
+    VAL_PROPERTY(int, p2, 0)
+    VAL_PROPERTY(double, p3, 0.0)
+    VAL_PROPERTY(QUuid, p4, QUuid())
+    REF_PROPERTY(TestDataObject2, subobj)
+    NREF_PROPERTY(TestDataObject2, nsubobjs)
+    NVAL_PROPERTY(int, nints);
+    NVAL_PROPERTY(QString, nstrings);
 public:
     TestDataObject1();
     ~TestDataObject1();
