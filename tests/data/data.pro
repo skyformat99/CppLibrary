@@ -30,10 +30,10 @@ win32-g++: {
 
 DESTDIR=../
 
-unix|win32: LIBS += -L$$PWD/../../lib/ -lData
+unix|win32: LIBS += -L$$PWD/../../lib/ -lralph-data
 
 INCLUDEPATH += $$PWD/../../lib/include/
-DEPENDPATH += $$PWD/../../src/lib/
+DEPENDPATH += $$PWD/../../src/
 
 HEADERS += \
     testdataobject1.h \

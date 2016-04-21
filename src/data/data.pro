@@ -26,13 +26,13 @@ HEADERS += data.h\
     xmldataserializer.h
 
 DESTDIR=../../lib
+INCLUDEDIR = $${DESTDIR}/include/ralph/data/
 
 unix {
     QMAKE_CXXFLAGS += -std=c++14
     target.path = /usr/lib
     INSTALLS += target
 
-    INCLUDEDIR = $${DESTDIR}/include/Data/
     QMAKE_POST_LINK += rm -fr $${INCLUDEDIR};
     QMAKE_POST_LINK += mkdir -p $${INCLUDEDIR};
     for(FILE, HEADERS){
@@ -43,7 +43,6 @@ unix {
 win32: {
     CONFIG += staticlib
 
-    INCLUDEDIR = $${DESTDIR}/include/Data/
     INCLUDEDIR ~= s,/,\\,g
     QMAKE_POST_LINK += rd $${INCLUDEDIR} /S /Q &
     QMAKE_POST_LINK += md $${INCLUDEDIR} &

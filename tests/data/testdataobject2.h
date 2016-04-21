@@ -2,7 +2,7 @@
 #define TESTDATAOBJECT2_H
 
 #include <QtCore>
-#include <Data/data.h>
+#include <ralph/data/data.h>
 
 class TestDataObject2 : public DataObject
 {

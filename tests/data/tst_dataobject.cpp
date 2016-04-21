@@ -1,7 +1,7 @@
 
 #include <QtCore>
 #include <QtTest>
-#include <Data/data.h>
+#include <ralph/data/data.h>
 #include "testdataobject1.h"
 
 class DataObjectTests : public QObject
@@ -12,7 +12,8 @@ public:
     DataObjectTests();
 
 private:
-    bool _slotCalled;
+    bool _slotChangingCalled;
+    bool _slotChangedCalled;
 
 private Q_SLOTS:
     void testDataObjectFactory();
@@ -122,7 +123,8 @@ void DataObjectTests::testDataObjectNvaluesProperties()
 
 void DataObjectTests::testDataObjectDynSignals()
 {
-    this->_slotCalled = false;
+    this->_slotChangingCalled = false;
+    this->_slotChangedCalled = false;
 
     QSharedPointer<TestDataObject1> dO = QSharedPointer<TestDataObject1>(new TestDataObject1());
 
@@ -132,7 +134,7 @@ void DataObjectTests::testDataObjectDynSignals()
 
     QObject::disconnect(dO.data(), SIGNAL(p1Changed()), this, SLOT(slot()));
 
-    QVERIFY2(this->_slotCalled, "Slot was not called");
+    QVERIFY2(this->_slotChangedCalled, "Slot was not called");
 }
 
 void DataObjectTests::testDataObjectEquals()
@@ -210,7 +212,7 @@ void DataObjectTests::testXmlSerializer()
 
 void DataObjectTests::slot()
 {
-    this->_slotCalled = true;
+    this->_slotChangedCalled = true;
 }
 
 QTEST_APPLESS_MAIN(DataObjectTests)

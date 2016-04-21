@@ -2,7 +2,7 @@
 #define TESTDATAOBJECT1_H
 
 #include <QtCore>
-#include <Data/data.h>
+#include <ralph/data/data.h>
 
 #include "testdataobject2.h"
 
