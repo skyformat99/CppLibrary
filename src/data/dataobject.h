@@ -24,6 +24,7 @@
 // each property has its own lock, but the object can be locked as whole, so there's a check for this object mutex on each action the property takes
 // also it supports lazy loading through the name##Loading signal
 #define REF_PROPERTY(type, name) \
+    Q_SIGNAL void name##Changing(); \
     Q_SIGNAL void name##Changed(); \
     Q_SIGNAL void name##Loading(); \
     private: \
@@ -54,6 +55,7 @@
             if(value != this->_##name) \
             { \
                 emit propertyChanging(#name); \
+                emit name##Changing(); \
                 this->_##name = value; \
                 emit propertyChanged(#name); \
                 emit name##Changed(); \
@@ -66,6 +68,7 @@
             if(value != this->_##name) \
             { \
                 emit propertyChanging(#name); \
+                emit name##Changing(); \
                 this->_##name = QSharedPointer<type>((type*)value); \
                 emit propertyChanged(#name); \
                 emit name##Changed(); \
@@ -77,6 +80,7 @@
 // macro creates full fledged Q_PROPERTIES with signals and slots as they are required for value types and threadsafe working
 // each property has its own lock, but the object can be locked as whole, so there's a check for this object mutex on each action the property takes
 #define VAL_PROPERTY(type, name, def) \
+    Q_SIGNAL void name##Changing(); \
     Q_SIGNAL void name##Changed(); \
     private: \
         type _##name = def; \
@@ -96,6 +100,7 @@
             if(value != this->_##name) \
             { \
                 emit propertyChanging(#name); \
+                emit name##Changing(); \
                 this->_##name = value; \
                 emit propertyChanged(#name); \
                 emit name##Changed(); \
@@ -107,6 +112,7 @@
 // each property has its own lock, but the object can be locked as whole, so there's a check for this object mutex on each action the property takes
 // also it supports lazy loading through the name##Loading signal
 #define NREF_PROPERTY(type, name) \
+    Q_SIGNAL void name##Changing(); \
     Q_SIGNAL void name##Changed(); \
     Q_SIGNAL void name##Loading(); \
     private: \
@@ -138,6 +144,7 @@
             this->mutex.lock(); this->mutex.unlock(); \
             QMutexLocker(&this->_mutex_##name); \
             emit propertyChanging(#name); \
+            emit name##Changing(); \
             this->_##name = value; \
             emit propertyChanged(#name); \
             emit name##Changed(); \
@@ -147,6 +154,7 @@
             this->mutex.lock(); this->mutex.unlock(); \
             QMutexLocker(&this->_mutex_##name); \
             emit propertyChanging(#name); \
+            emit name##Changing(); \
             this->_##name.clear(); \
             foreach(DataObject* var, value) this->_##name.append(QSharedPointer<type>((type*)var)); \
             emit propertyChanged(#name); \
@@ -159,6 +167,7 @@
 // each property has its own lock, but the object can be locked as whole, so there's a check for this object mutex on each action the property takes
 // also it supports lazy loading through the name##Loading signal
 #define NVAL_PROPERTY(type, name) \
+    Q_SIGNAL void name##Changing(); \
     Q_SIGNAL void name##Changed(); \
     Q_SIGNAL void name##Loading(); \
     private: \
@@ -190,6 +199,7 @@
             this->mutex.lock(); this->mutex.unlock(); \
             QMutexLocker(&this->_mutex_##name); \
             emit propertyChanging(#name); \
+            emit name##Changing(); \
             this->_##name = value; \
             emit propertyChanged(#name); \
             emit name##Changed(); \
@@ -199,6 +209,7 @@
             this->mutex.lock(); this->mutex.unlock(); \
             QMutexLocker(&this->_mutex_##name); \
             emit propertyChanging(#name); \
+            emit name##Changing(); \
             this->_##name.clear(); \
             foreach(QVariant var, value) this->_##name.append(var.value<type>()); \
             emit propertyChanged(#name); \

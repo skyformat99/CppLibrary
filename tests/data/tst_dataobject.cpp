@@ -12,8 +12,9 @@ public:
     DataObjectTests();
 
 private:
-    bool _slotChangingCalled;
-    bool _slotChangedCalled;
+    bool _testDataObjectDynSignals_slotChangingCalled;
+    bool _testDataObjectDynSignals_slotChangedCalled;
+    QSharedPointer<TestDataObject1> _testDataObjectDynSignals_Object;
 
 private Q_SLOTS:
     void testDataObjectFactory();
@@ -26,7 +27,8 @@ private Q_SLOTS:
     void testXmlSerializer();
 
 public slots:
-    void slot();
+    void testDataObjectDynSignals_slotChanging();
+    void testDataObjectDynSignals_slotChanged();
 };
 
 DataObjectTests::DataObjectTests()
@@ -123,18 +125,23 @@ void DataObjectTests::testDataObjectNvaluesProperties()
 
 void DataObjectTests::testDataObjectDynSignals()
 {
-    this->_slotChangingCalled = false;
-    this->_slotChangedCalled = false;
+    this->_testDataObjectDynSignals_slotChangingCalled = false;
+    this->_testDataObjectDynSignals_slotChangedCalled = false;
 
-    QSharedPointer<TestDataObject1> dO = QSharedPointer<TestDataObject1>(new TestDataObject1());
+    this->_testDataObjectDynSignals_Object = QSharedPointer<TestDataObject1>(new TestDataObject1());
 
-    QObject::connect(dO.data(), SIGNAL(p1Changed()), this, SLOT(slot()));
+    this->_testDataObjectDynSignals_Object->set_p1("rudi");
 
-    dO->set_p1("franzi");
+    QObject::connect(this->_testDataObjectDynSignals_Object.data(), SIGNAL(p1Changing()), this, SLOT(testDataObjectDynSignals_slotChanging()));
+    QObject::connect(this->_testDataObjectDynSignals_Object.data(), SIGNAL(p1Changed()), this, SLOT(testDataObjectDynSignals_slotChanged()));
 
-    QObject::disconnect(dO.data(), SIGNAL(p1Changed()), this, SLOT(slot()));
+    this->_testDataObjectDynSignals_Object->set_p1("franzi");
 
-    QVERIFY2(this->_slotChangedCalled, "Slot was not called");
+    QObject::disconnect(this->_testDataObjectDynSignals_Object.data(), SIGNAL(p1Changing()), this, SLOT(testDataObjectDynSignals_slotChanging()));
+    QObject::disconnect(this->_testDataObjectDynSignals_Object.data(), SIGNAL(p1Changed()), this, SLOT(testDataObjectDynSignals_slotChanged()));
+
+    QVERIFY2(this->_testDataObjectDynSignals_slotChangingCalled, "changing slot was not called");
+    QVERIFY2(this->_testDataObjectDynSignals_slotChangedCalled, "changed slot was not called");
 }
 
 void DataObjectTests::testDataObjectEquals()
@@ -210,9 +217,16 @@ void DataObjectTests::testXmlSerializer()
              dO1->nstrings().count() == 3 && dO1->nstrings().at(1) == "ble", "Deserialized object does not match");
 }
 
-void DataObjectTests::slot()
+void DataObjectTests::testDataObjectDynSignals_slotChanging()
 {
-    this->_slotChangedCalled = true;
+    this->_testDataObjectDynSignals_slotChangingCalled = true;
+
+    QVERIFY2(this->_testDataObjectDynSignals_Object->p1() == "rudi", "changing slot was called, but property is already changed");
+}
+
+void DataObjectTests::testDataObjectDynSignals_slotChanged()
+{
+    this->_testDataObjectDynSignals_slotChangedCalled = true;
 }
 
 QTEST_APPLESS_MAIN(DataObjectTests)
