@@ -218,30 +218,46 @@
     Q_PROPERTY(QList<type> name READ name WRITE set_##name NOTIFY name##Changed) \
     Q_PROPERTY(QList<QVariant> __g_##name READ __g_##name WRITE __g_set_##name NOTIFY name##Changed)
 
-class DataObject : public QObject
-{
-    Q_OBJECT
-public:
-    DataObject();
-    ~DataObject();
 
-    virtual bool equals(DataObject& obj) const;
-    virtual void updateFrom(DataObject& obj);
-    QSharedPointer<DataObject> clone();
+namespace ralph {
+    namespace data {
 
-protected:
-    mutable QMutex mutex;
+        /// base class for DataObjects which are comparable, cloneable, updateable, loadable, notifying and threadsafe
+        class DataObject : public QObject
+        {
+            Q_OBJECT
+        public:
+            DataObject();
+            ~DataObject();
 
-signals:
-    // properties are implementing the PropertyChanging and PropertyChanged pattern known from .NET aside of the Changed pattern from Qt which you should prefer
-    void propertyChanging(const QString& propertyName);
-    void propertyChanged(const QString& propertyName);
-};
+            /// compares two DataObjects of the same type by property tree equality instead of reference
+            virtual bool equals(DataObject &obj) const;
 
-Q_DECLARE_METATYPE(QSharedPointer<DataObject>)
-Q_DECLARE_METATYPE(DataObject*)
-Q_DECLARE_METATYPE(QList<QSharedPointer<DataObject>>)
-Q_DECLARE_METATYPE(QList<DataObject*>)
+            /// updates property tree of DataObject using another DataObject of the same type.
+            /// this leads to obj1->equals(obj2) == true
+            virtual void updateFrom(DataObject &obj);
+
+            /// clones the property tree of an object into a new one
+            QSharedPointer<DataObject> clone();
+
+        protected:
+            mutable QMutex mutex;
+
+        signals:
+            ///generic notification when a property is about to change
+            void propertyChanging(const QString &propertyName);
+
+            ///generic notification when a property is changed
+            void propertyChanged(const QString &propertyName);
+        };
+
+    }
+}
+
+Q_DECLARE_METATYPE(QSharedPointer<ralph::data::DataObject>)
+Q_DECLARE_METATYPE(ralph::data::DataObject*)
+Q_DECLARE_METATYPE(QList<QSharedPointer<ralph::data::DataObject>>)
+Q_DECLARE_METATYPE(QList<ralph::data::DataObject*>)
 
 #endif // DATAOBJECT_H
 

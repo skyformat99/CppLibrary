@@ -4,6 +4,8 @@
 #include <QtCore>
 #include <ralph/data/data.h>
 
+using namespace ralph::data;
+
 class TestDataObject2 : public DataObject
 {
     Q_OBJECT

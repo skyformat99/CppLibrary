@@ -6,6 +6,8 @@
 
 #include "testdataobject2.h"
 
+using namespace ralph::data;
+
 class TestDataObject1 : public DataObject
 {
     Q_OBJECT

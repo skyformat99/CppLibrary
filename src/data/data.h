@@ -6,6 +6,6 @@
 #include "dataobjectfactory.h"
 #include "dataobject.h"
 #include "dataexceptions.h"
-#include "xmldataserializer.h"
+#include "serializer.h"
 
 #endif // DATA_H

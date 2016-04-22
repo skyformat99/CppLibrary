@@ -4,6 +4,8 @@
 #include <ralph/data/data.h>
 #include "testdataobject1.h"
 
+using namespace ralph::data;
+
 class DataObjectTests : public QObject
 {
     Q_OBJECT
@@ -18,12 +20,15 @@ private:
 
 private Q_SLOTS:
     void testDataObjectFactory();
-    void testDataObjectValueProperties();
-    void testDataObjectObjectProperties();
-    void testDataObjectNobjectsProperties();
-    void testDataObjectNvaluesProperties();
-    void testDataObjectDynSignals();
-    void testDataObjectEquals();
+    void testDataObject_valueProperties();
+    void testDataObject_objectProperties();
+    void testDataObject_nobjectsProperties();
+    void testDataObject_nvaluesProperties();
+    void testDataObject_dynSignals();
+    void testDataObject_equals();
+    // TODO testDataObject_updateFrom
+    // TODO testDataObject_clone
+    // TODO testDataObject_threadSafety
     void testXmlSerializer();
 
 public slots:
@@ -41,7 +46,7 @@ void DataObjectTests::testDataObjectFactory()
     QVERIFY2(strcmp(dO->metaObject()->className(), "TestDataObject1") == 0, "Object metainformation doesn't match created type");
 }
 
-void DataObjectTests::testDataObjectValueProperties()
+void DataObjectTests::testDataObject_valueProperties()
 {
     QUuid testUuid1 = QUuid::createUuid();
     QUuid testUuid2 = QUuid::createUuid();
@@ -69,7 +74,7 @@ void DataObjectTests::testDataObjectValueProperties()
     QVERIFY2(dO->property("p4") == testUuid2, "Property not got correctly");
 }
 
-void DataObjectTests::testDataObjectObjectProperties()
+void DataObjectTests::testDataObject_objectProperties()
 {
     QSharedPointer<TestDataObject1> dO1(new TestDataObject1());
     dO1->set_p1("ralph");
@@ -82,7 +87,7 @@ void DataObjectTests::testDataObjectObjectProperties()
     QVERIFY2(dO1->property("subobj").value<QSharedPointer<TestDataObject2>>() == dO2, "Property not got correctly");
 }
 
-void DataObjectTests::testDataObjectNobjectsProperties()
+void DataObjectTests::testDataObject_nobjectsProperties()
 {
     QSharedPointer<TestDataObject1> dO1(new TestDataObject1());
     dO1->set_p1("ralph");
@@ -99,7 +104,7 @@ void DataObjectTests::testDataObjectNobjectsProperties()
     QVERIFY2(list2.at(0)->p1() == "franzi", "list not set correctly");
 }
 
-void DataObjectTests::testDataObjectNvaluesProperties()
+void DataObjectTests::testDataObject_nvaluesProperties()
 {
     QSharedPointer<TestDataObject1> dO1(new TestDataObject1());
     dO1->set_p1("ralph");
@@ -123,7 +128,7 @@ void DataObjectTests::testDataObjectNvaluesProperties()
     QVERIFY2(list3.at(2) == 2 && list4.at(2) == "bli", "list not set correctly");
 }
 
-void DataObjectTests::testDataObjectDynSignals()
+void DataObjectTests::testDataObject_dynSignals()
 {
     this->_testDataObjectDynSignals_slotChangingCalled = false;
     this->_testDataObjectDynSignals_slotChangedCalled = false;
@@ -144,7 +149,7 @@ void DataObjectTests::testDataObjectDynSignals()
     QVERIFY2(this->_testDataObjectDynSignals_slotChangedCalled, "changed slot was not called");
 }
 
-void DataObjectTests::testDataObjectEquals()
+void DataObjectTests::testDataObject_equals()
 {
     QSharedPointer<TestDataObject1> dO1(new TestDataObject1());
     dO1->set_p1("ralph");
@@ -197,14 +202,14 @@ void DataObjectTests::testXmlSerializer()
     list3.append("bli");
     dO1->set_nstrings(list3);
 
-    XmlDataSerializer ser;
+    XmlSerializer ser;
 
     QList<int> tmp1 = dO1->nints();
     QList<QVariant> tmp2 = dO1->__g_nints();
 
     QString xml = ser.Serialize(*dO1);
 
-    qDebug() << xml.replace("\r", "", Qt::CaseSensitive).replace("\n", "", Qt::CaseSensitive).replace(" ", "", Qt::CaseSensitive);  // uncomment, see and replace below if testobjects changed and therefor the resulting xml
+    //qDebug() << xml.replace("\r", "", Qt::CaseSensitive).replace("\n", "", Qt::CaseSensitive).replace(" ", "", Qt::CaseSensitive);  // uncomment, see and replace below if testobjects changed and therefor the resulting xml
     QString temp("<TestDataObject1><p1>ralph</p1><p2>2</p2><p3>1.1000000000000001</p3><p4>{00000000-0000-0000-0000-000000000000}</p4><subobj><TestDataObject2><p1>franzi</p1></TestDataObject2></subobj><nsubobjs><TestDataObject2><p1>franzi</p1></TestDataObject2><TestDataObject2><p1>rudi</p1></TestDataObject2></nsubobjs><nints><int>0</int><int>1</int><int>2</int></nints><nstrings><QString>bla</QString><QString>ble</QString><QString>bli</QString></nstrings></TestDataObject1>");
 
     QVERIFY2(xml.replace("\r", "", Qt::CaseSensitive).replace("\n", "", Qt::CaseSensitive).replace(" ", "", Qt::CaseSensitive) == temp, "Generated xml does not match the template");
