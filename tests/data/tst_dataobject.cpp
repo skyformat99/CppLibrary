@@ -175,10 +175,14 @@ void DataObjectTests::testXmlSerializer()
     QSharedPointer<TestDataObject2> dO2(new TestDataObject2());
     dO2->set_p1("franzi");
 
+    QSharedPointer<TestDataObject2> dO3(new TestDataObject2());
+    dO3->set_p1("rudi");
+
     dO1->set_subobj(dO2);
 
     QList<QSharedPointer<TestDataObject2>> list1 = dO1->nsubobjs();
     list1.append(dO2);
+    list1.append(dO3);
     dO1->set_nsubobjs(list1);
 
     QList<int> list2 = dO1->nints();
@@ -200,19 +204,19 @@ void DataObjectTests::testXmlSerializer()
 
     QString xml = ser.Serialize(*dO1);
 
-    //qDebug() << xml;  // uncomment, see and replace below if testobjects changed and therefor the resulting xml
-    QString temp("<TestDataObject1><p1>ralph</p1><p2>2</p2><p3>1.1</p3><p4>{00000000-0000-0000-0000-000000000000}</p4><subobj><TestDataObject2><p1>franzi</p1></TestDataObject2></subobj><nsubobjs><TestDataObject2><p1>franzi</p1></TestDataObject2></nsubobjs><nints><int>0</int><int>1</int><int>2</int></nints><nstrings><QString>bla</QString><QString>ble</QString><QString>bli</QString></nstrings></TestDataObject1>");
+    qDebug() << xml.replace("\r", "", Qt::CaseSensitive).replace("\n", "", Qt::CaseSensitive).replace(" ", "", Qt::CaseSensitive);  // uncomment, see and replace below if testobjects changed and therefor the resulting xml
+    QString temp("<TestDataObject1><p1>ralph</p1><p2>2</p2><p3>1.1000000000000001</p3><p4>{00000000-0000-0000-0000-000000000000}</p4><subobj><TestDataObject2><p1>franzi</p1></TestDataObject2></subobj><nsubobjs><TestDataObject2><p1>franzi</p1></TestDataObject2><TestDataObject2><p1>rudi</p1></TestDataObject2></nsubobjs><nints><int>0</int><int>1</int><int>2</int></nints><nstrings><QString>bla</QString><QString>ble</QString><QString>bli</QString></nstrings></TestDataObject1>");
 
     QVERIFY2(xml.replace("\r", "", Qt::CaseSensitive).replace("\n", "", Qt::CaseSensitive).replace(" ", "", Qt::CaseSensitive) == temp, "Generated xml does not match the template");
 
-    QSharedPointer<TestDataObject1> dO3 = ser.Deserialize(temp).objectCast<TestDataObject1>();
+    QSharedPointer<TestDataObject1> dO4 = ser.Deserialize(temp).objectCast<TestDataObject1>();
 
-    QVERIFY2(dO3->p1() == "ralph" &&
-             dO3->p2() == 2 &&
-             dO3->p3() == 1.1 &&
+    QVERIFY2(dO4->p1() == "ralph" &&
+             dO4->p2() == 2 &&
+             dO4->p3() == 1.1 &&
              dO1->subobj() != NULL &&
              dO1->subobj()->p1() == "franzi" &&
-             dO1->nsubobjs().count() == 1 && dO1->nsubobjs().at(0)->p1() == "franzi" &&
+             dO1->nsubobjs().count() == 2 && dO1->nsubobjs().at(0)->p1() == "franzi" && dO1->nsubobjs().at(1)->p1() == "rudi" &&
              dO1->nints().count() == 3 && dO1->nints().at(1) == 1 &&
              dO1->nstrings().count() == 3 && dO1->nstrings().at(1) == "ble", "Deserialized object does not match");
 }
