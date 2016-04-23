@@ -16,16 +16,16 @@ namespace ralph {
             ~Serializer();
 
             /// serialize into a file
-            virtual void Serialize(DataObject &obj, QFile &file) = 0;
+            virtual void serialize(DataObject &obj, QFile &file) = 0;
 
             /// serialize into a data stream
-            virtual void Serialize(DataObject &obj, QDataStream &stream) = 0;
+            virtual void serialize(DataObject &obj, QDataStream &stream) = 0;
 
             /// deserilize from a file
-            virtual QSharedPointer<DataObject> Deserialize(QFile &file) = 0;
+            virtual QSharedPointer<DataObject> deserialize(QFile &file) = 0;
 
             /// deserialize from a data stream
-            virtual QSharedPointer<DataObject> Deserialize(QDataStream &stream) = 0;
+            virtual QSharedPointer<DataObject> deserialize(QDataStream &stream) = 0;
         };
 
         /// base type for DataObject serializer serializing into a text based dataformat
@@ -36,14 +36,14 @@ namespace ralph {
             ~TextSerializer();
 
             /// serialize into a string
-            virtual QString Serialize(DataObject &obj) = 0;
-            virtual void Serialize(DataObject &obj, QFile &file) = 0;
-            virtual void Serialize(DataObject &obj, QDataStream &stream) = 0;
+            virtual QString serialize(DataObject &obj) = 0;
+            virtual void serialize(DataObject &obj, QFile &file) = 0;
+            virtual void serialize(DataObject &obj, QDataStream &stream) = 0;
 
             /// deserialize from a string
-            virtual QSharedPointer<DataObject> Deserialize(QString &text) = 0;
-            virtual QSharedPointer<DataObject> Deserialize(QFile &file) = 0;
-            virtual QSharedPointer<DataObject> Deserialize(QDataStream &stream) = 0;
+            virtual QSharedPointer<DataObject> deserialize(QString &text) = 0;
+            virtual QSharedPointer<DataObject> deserialize(QFile &file) = 0;
+            virtual QSharedPointer<DataObject> deserialize(QDataStream &stream) = 0;
         };
 
         /// serializer serializing DataObjects into xml
@@ -53,22 +53,22 @@ namespace ralph {
             XmlSerializer();
             ~XmlSerializer();
 
-            QString Serialize(DataObject &obj);
-            void Serialize(DataObject &obj, QFile &file);
-            void Serialize(DataObject &obj, QDataStream &stream);
+            QString serialize(DataObject &obj);
+            void serialize(DataObject &obj, QFile &file);
+            void serialize(DataObject &obj, QDataStream &stream);
 
-            QSharedPointer<DataObject> Deserialize(QString &text);
-            QSharedPointer<DataObject> Deserialize(QFile &file);
-            QSharedPointer<DataObject> Deserialize(QDataStream &stream);
+            QSharedPointer<DataObject> deserialize(QString &text);
+            QSharedPointer<DataObject> deserialize(QFile &file);
+            QSharedPointer<DataObject> deserialize(QDataStream &stream);
 
         private:
-            void Serialize(DataObject &obj, QDomDocument &doc);
-            void Serialize(DataObject &obj, QDomDocument &doc, QDomNode &parent);
-            void SerializeContent(DataObject &obj, QDomDocument &doc, QDomNode &node);
+            void serialize(DataObject &obj, QDomDocument &doc);
+            void serialize(DataObject &obj, QDomDocument &doc, QDomNode &parent);
+            void serializeContent(DataObject &obj, QDomDocument &doc, QDomNode &node);
 
-            DataObject* Deserialize(QDomDocument &doc);
-            DataObject* Deserialize(QDomNode &node);
-            void DeserializeContent(QDomNode &node, DataObject &obj);
+            DataObject* deserialize(QDomDocument &doc);
+            DataObject* deserialize(QDomNode &node);
+            void deserializeContent(QDomNode &node, DataObject &obj);
         };
 
         // TODO implement JsonSerializer for DataObjects
@@ -79,13 +79,13 @@ namespace ralph {
             JsonSerializer();
             ~JsonSerializer();
 
-            QString Serialize(DataObject &obj);
-            void Serialize(DataObject &obj, QFile &file);
-            void Serialize(DataObject &obj, QDataStream &stream);
+            QString serialize(DataObject &obj);
+            void serialize(DataObject &obj, QFile &file);
+            void serialize(DataObject &obj, QDataStream &stream);
 
-            QSharedPointer<DataObject> Deserialize(QString &text);
-            QSharedPointer<DataObject> Deserialize(QFile &file);
-            QSharedPointer<DataObject> Deserialize(QDataStream &stream);
+            QSharedPointer<DataObject> deserialize(QString &text);
+            QSharedPointer<DataObject> deserialize(QFile &file);
+            QSharedPointer<DataObject> deserialize(QDataStream &stream);
 
         private:
         };

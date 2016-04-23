@@ -11,7 +11,7 @@ namespace ralph {
         {
         }
 
-        bool DataObject::equals(DataObject& obj) const
+        bool DataObject::equals(DataObject &obj) const
         {
             const QMetaObject* metaObject1 = this->metaObject();
             const QMetaObject* metaObject2 = obj.metaObject();
@@ -44,12 +44,12 @@ namespace ralph {
                         QSequentialIterable tIterable = this->property(pName.toStdString().c_str()).value<QSequentialIterable>();
                         QSequentialIterable oIterable = obj.property(pName.toStdString().c_str()).value<QSequentialIterable>();
 
-                        foreach(const QVariant& tItem, tIterable)
+                        foreach(const QVariant &tItem, tIterable)
                         {
                             QSharedPointer<DataObject> tfObj = tItem.value<QSharedPointer<DataObject>>();
                             bool found = false;
 
-                            foreach(const QVariant& oItem, oIterable)
+                            foreach(const QVariant &oItem, oIterable)
                             {
                                 QSharedPointer<DataObject> ofObj = oItem.value<QSharedPointer<DataObject>>();
 
@@ -81,7 +81,7 @@ namespace ralph {
             else return false;
         }
 
-        void DataObject::updateFrom(DataObject& obj)
+        void DataObject::updateFrom(DataObject &obj)
         {
             const QMetaObject* metaObject1 = this->metaObject();
             const QMetaObject* metaObject2 = obj.metaObject();

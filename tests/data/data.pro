@@ -17,7 +17,9 @@ TEMPLATE = app
 SOURCES += \
     testdataobject1.cpp \
     testdataobject2.cpp \
-    tst_dataobject.cpp
+    tst_dataobject.cpp \
+    tst_serializer.cpp \
+    main.cpp
 DEFINES += SRCDIR=\\\"$$PWD/\\\"
 
 unix {
@@ -37,6 +39,8 @@ DEPENDPATH += $$PWD/../../src/
 
 HEADERS += \
     testdataobject1.h \
-    testdataobject2.h
+    testdataobject2.h \
+    tst_dataobject.h \
+    tst_serializer.h
 
 CONFIG(release, debug|release):DEFINES += QT_NO_DEBUG_OUTPUT

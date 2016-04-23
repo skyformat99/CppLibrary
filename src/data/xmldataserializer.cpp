@@ -13,46 +13,46 @@ namespace ralph {
 
         }
 
-        QString XmlSerializer::Serialize(DataObject &obj)
+        QString XmlSerializer::serialize(DataObject &obj)
         {
             QDomDocument doc;
-            this->Serialize(obj, doc);
+            this->serialize(obj, doc);
 
             return doc.toString();
         }
 
-        void XmlSerializer::Serialize(DataObject &obj, QFile &file)
+        void XmlSerializer::serialize(DataObject &obj, QFile &file)
         {
             QDataStream stream(&file);
 
-            return Serialize(obj, stream);
+            return serialize(obj, stream);
         }
 
-        void XmlSerializer::Serialize(DataObject &obj, QDataStream &stream)
+        void XmlSerializer::serialize(DataObject &obj, QDataStream &stream)
         {
-            QString str = this->Serialize(obj);
+            QString str = this->serialize(obj);
             stream << str.toUtf8();
         }
 
-        void XmlSerializer::Serialize(DataObject &obj, QDomDocument &doc)
+        void XmlSerializer::serialize(DataObject &obj, QDomDocument &doc)
         {
             QDomElement node = doc.createElement(obj.metaObject()->className());
 
-            this->SerializeContent(obj, doc, node);
+            this->serializeContent(obj, doc, node);
 
             doc.appendChild(node);
         }
 
-        void XmlSerializer::Serialize(DataObject &obj, QDomDocument &doc, QDomNode &parent)
+        void XmlSerializer::serialize(DataObject &obj, QDomDocument &doc, QDomNode &parent)
         {
             QDomElement node = doc.createElement(obj.metaObject()->className());
 
-            this->SerializeContent(obj, doc, node);
+            this->serializeContent(obj, doc, node);
 
             parent.appendChild(node);
         }
 
-        void XmlSerializer::SerializeContent(DataObject &obj, QDomDocument &doc, QDomNode &node)
+        void XmlSerializer::serializeContent(DataObject &obj, QDomDocument &doc, QDomNode &node)
         {
             const QMetaObject* metaObject = obj.metaObject();
             for(int i = 1; i < metaObject->propertyCount(); i++)
@@ -68,7 +68,7 @@ namespace ralph {
 
                     if(tName.startsWith("QSharedPointer<"))
                     {
-                        this->Serialize(*obj.property(gpName.toStdString().c_str()).value<DataObject*>(), doc, prop);
+                        this->serialize(*obj.property(gpName.toStdString().c_str()).value<DataObject*>(), doc, prop);
                     }
                     else if(tName.startsWith("QList<"))
                     {
@@ -77,7 +77,7 @@ namespace ralph {
                             QList<DataObject*> iterable = obj.property(gpName.toStdString().c_str()).value<QList<DataObject*>>();
                             foreach(DataObject* item, iterable)
                             {
-                                this->Serialize(*item, doc, prop);
+                                this->serialize(*item, doc, prop);
                             }
                         }
                         else
@@ -102,50 +102,50 @@ namespace ralph {
             }
         }
 
-        QSharedPointer<DataObject> XmlSerializer::Deserialize(QString &text)
+        QSharedPointer<DataObject> XmlSerializer::deserialize(QString &text)
         {
             QDomDocument doc;
             doc.setContent(text);
 
-            return QSharedPointer<DataObject>(this->Deserialize(doc));
+            return QSharedPointer<DataObject>(this->deserialize(doc));
 
         }
 
-        QSharedPointer<DataObject> XmlSerializer::Deserialize(QFile &file)
+        QSharedPointer<DataObject> XmlSerializer::deserialize(QFile &file)
         {
             QDataStream stream(&file);
 
-            return Deserialize(stream);
+            return deserialize(stream);
         }
 
-        QSharedPointer<DataObject> XmlSerializer::Deserialize(QDataStream &stream)
+        QSharedPointer<DataObject> XmlSerializer::deserialize(QDataStream &stream)
         {
             QByteArray arr;
             stream >> arr;
 
             QString str = QString::fromUtf8(arr);
-            QSharedPointer<DataObject> obj = this->Deserialize(str);
+            QSharedPointer<DataObject> obj = this->deserialize(str);
             return obj;
         }
 
-        DataObject* XmlSerializer::Deserialize(QDomDocument &doc)
+        DataObject* XmlSerializer::deserialize(QDomDocument &doc)
         {
             QDomNode root = doc.firstChild();
             DataObject* obj = DataObjectFactory::create(root.nodeName());
-            this->DeserializeContent(root, *obj);
+            this->deserializeContent(root, *obj);
 
             return obj;
         }
 
-        DataObject* XmlSerializer::Deserialize(QDomNode &node)
+        DataObject* XmlSerializer::deserialize(QDomNode &node)
         {
             DataObject* obj = DataObjectFactory::create(node.nodeName());
-            this->DeserializeContent(node, *obj);
+            this->deserializeContent(node, *obj);
 
             return obj;
         }
 
-        void XmlSerializer::DeserializeContent(QDomNode &node, DataObject &obj)
+        void XmlSerializer::deserializeContent(QDomNode &node, DataObject &obj)
         {
             const QMetaObject* metaObject = obj.metaObject();
             QDomNodeList nodes = node.childNodes();
@@ -163,7 +163,7 @@ namespace ralph {
                     if(tName.startsWith("QSharedPointer<"))
                     {
                         QDomNode rNode = cNode.firstChild();
-                        DataObject* dO = this->Deserialize(rNode);
+                        DataObject* dO = this->deserialize(rNode);
                         obj.setProperty(gpName.toStdString().c_str(), QVariant::fromValue(dO));
                     }
                     else if(tName.startsWith("QList<"))
@@ -179,7 +179,7 @@ namespace ralph {
                                 for(int j = 0; j < rNodes.length(); j++)
                                 {
                                     QDomNode rNode = rNodes.at(j);
-                                    DataObject* dO = this->Deserialize(rNode);
+                                    DataObject* dO = this->deserialize(rNode);
                                     list.append(dO);
                                 }
                                 QVariant nvar;
