@@ -4,31 +4,23 @@
 #
 #-------------------------------------------------
 
-QT       += xml sql
+#QT       += xml
 
 QT       -= gui
 
-TARGET = ralph-data
+TARGET = ralph-service
 TEMPLATE = lib
 
-DEFINES += DATA_LIBRARY
+DEFINES += SERVICE_LIBRARY
 
 SOURCES += \
-    dataobject.cpp \
-    dataobjectfactory.cpp \
-    xmldataserializer.cpp \
-    serializer.cpp \
-    dataexceptions.cpp
+    servicemanager.cpp
 
-HEADERS += data.h\
-    data_global.h \
-    dataobject.h \
-    dataexceptions.h \
-    dataobjectfactory.h \
-    serializer.h
+HEADERS += \
+    servicemanager.h
 
 DESTDIR=../../lib
-INCLUDEDIR = $${DESTDIR}/include/ralph/data/
+INCLUDEDIR = $${DESTDIR}/include/ralph/service/
 
 unix {
     QMAKE_CXXFLAGS += -std=c++14
