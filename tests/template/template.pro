@@ -8,18 +8,15 @@ QT       += testlib xml
 
 QT       -= gui
 
-TARGET = tst_data
+TARGET = tst_servicetests
 CONFIG   += console
 CONFIG   -= app_bundle
 
 TEMPLATE = app
 
 SOURCES += \
-    testdataobject1.cpp \
-    testdataobject2.cpp \
-    tst_dataobject.cpp \
-    tst_serializer.cpp \
-    main.cpp
+    main.cpp \
+    tst_template.cpp
 DEFINES += SRCDIR=\\\"$$PWD/\\\"
 
 unix {
@@ -38,9 +35,6 @@ INCLUDEPATH += $$PWD/../../lib/include/
 DEPENDPATH += $$PWD/../../src/
 
 HEADERS += \
-    testdataobject1.h \
-    testdataobject2.h \
-    tst_dataobject.h \
-    tst_serializer.h
+    tst_template.h
 
 CONFIG(release, debug|release):DEFINES += QT_NO_DEBUG_OUTPUT

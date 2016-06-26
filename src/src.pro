@@ -2,4 +2,8 @@ TEMPLATE = subdirs
 
 SUBDIRS = \
     data \
-    service
+    #service \
+    simulation \
+    simulation-data \
+    simulation-lang-ecl \
+    simulation-lang-python
