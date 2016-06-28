@@ -6,7 +6,7 @@ DataObjectTests::DataObjectTests()
 
 void DataObjectTests::testDataObjectFactory()
 {
-    QSharedPointer<DataObject> dO(DataObjectFactory::create("TestDataObject1"));
+    QSharedPointer<ralph::data::DataObject> dO(ralph::data::DataObjectFactory::create("TestDataObject1"));
     QVERIFY2(strcmp(dO->metaObject()->className(), "TestDataObject1") == 0, "Object metainformation doesn't match created type");
 }
 

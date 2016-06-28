@@ -18,7 +18,6 @@ SOURCES +=
 HEADERS += 
 
 DESTDIR=../../lib
-INCLUDEDIR = $${DESTDIR}/include/ralph/service/
 
 unix {
     QMAKE_CXXFLAGS += -std=c++14

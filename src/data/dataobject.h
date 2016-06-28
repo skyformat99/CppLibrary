@@ -18,7 +18,7 @@
 // macro does the constructor registration
 #define DATAOBJECT(name) \
     public: \
-        static void reg() { DataObjectFactory::typeMap[#name] = &createDataObjectInstance<name>; }
+        static void reg() { ralph::data::DataObjectFactory::typeMap[#name] = &ralph::data::createDataObjectInstance<name>; }
 
 // macro creates full fledged Q_PROPERTIES with signals and slots as they are required for subobjects types and threadsafe working
 // each property has its own lock, but the object can be locked as whole, so there's a check for this object mutex on each action the property takes
@@ -40,13 +40,13 @@
             QMutexLocker(&this->_mutex_##name); \
             return this->_##name; \
         } \
-        DataObject* __g_##name() \
+        ralph::data::DataObject* __g_##name() \
         { \
             if(!this->_##name##Loaded) { emit name##Loading(); this->_##name##Loaded = true; } \
             \
             this->mutex.lock(); this->mutex.unlock(); \
             QMutexLocker(&this->_mutex_##name); \
-            return (DataObject*)this->_##name.data(); \
+            return (ralph::data::DataObject*)this->_##name.data(); \
         } \
         Q_SLOT void set_##name(QSharedPointer<type> value) \
         { \
@@ -61,7 +61,7 @@
                 emit name##Changed(); \
             } \
         } \
-        Q_SLOT void __g_set_##name(DataObject* value) \
+        Q_SLOT void __g_set_##name(ralph::data::DataObject* value) \
         { \
             this->mutex.lock(); this->mutex.unlock(); \
             QMutexLocker(&this->_mutex_##name); \
@@ -75,7 +75,7 @@
             } \
         } \
     Q_PROPERTY(QSharedPointer<type> name READ name WRITE set_##name NOTIFY name##Changed) \
-    Q_PROPERTY(DataObject* __g_##name READ __g_##name WRITE __g_set_##name NOTIFY name##Changed)
+    Q_PROPERTY(ralph::data::DataObject* __g_##name READ __g_##name WRITE __g_set_##name NOTIFY name##Changed)
 
 // macro creates full fledged Q_PROPERTIES with signals and slots as they are required for value types and threadsafe working
 // each property has its own lock, but the object can be locked as whole, so there's a check for this object mutex on each action the property takes
@@ -106,6 +106,11 @@
                 emit name##Changed(); \
             } \
         } \
+        \
+        type default_##name() \
+        { \
+            return def; \
+        } \
     Q_PROPERTY(type name READ name WRITE set_##name NOTIFY name##Changed)
 
 // macro creates full fledged Q_PROPERTIES with signals and slots as they are required for subobjects types and threadsafe working
@@ -128,15 +133,15 @@
             QMutexLocker(&this->_mutex_##name); \
             return this->_##name; \
         } \
-        QList<DataObject*> __g_##name() \
+        QList<ralph::data::DataObject*> __g_##name() \
         { \
             if(!this->_##name##Loaded) { emit name##Loading(); this->_##name##Loaded = true; } \
             \
             this->mutex.lock(); this->mutex.unlock(); \
             QMutexLocker(&this->_mutex_##name); \
             \
-            QList<DataObject*> list; \
-            foreach(QSharedPointer<type> var, this->_##name) list.append((DataObject*)var.data()); \
+            QList<ralph::data::DataObject*> list; \
+            foreach(QSharedPointer<type> var, this->_##name) list.append((ralph::data::DataObject*)var.data()); \
             return list; \
         } \
         Q_SLOT void set_##name(QList<QSharedPointer<type>> value) \
@@ -149,19 +154,19 @@
             emit propertyChanged(#name); \
             emit name##Changed(); \
         } \
-        Q_SLOT void __g_set_##name(QList<DataObject*> value) \
+        Q_SLOT void __g_set_##name(QList<ralph::data::DataObject*> value) \
         { \
             this->mutex.lock(); this->mutex.unlock(); \
             QMutexLocker(&this->_mutex_##name); \
             emit propertyChanging(#name); \
             emit name##Changing(); \
             this->_##name.clear(); \
-            foreach(DataObject* var, value) this->_##name.append(QSharedPointer<type>((type*)var)); \
+            foreach(ralph::data::DataObject* var, value) this->_##name.append(QSharedPointer<type>((type*)var)); \
             emit propertyChanged(#name); \
             emit name##Changed(); \
         } \
     Q_PROPERTY(QList<QSharedPointer<type>> name READ name WRITE set_##name NOTIFY name##Changed) \
-    Q_PROPERTY(QList<DataObject*> __g_##name READ __g_##name WRITE __g_set_##name NOTIFY name##Changed)
+    Q_PROPERTY(QList<ralph::data::DataObject*> __g_##name READ __g_##name WRITE __g_set_##name NOTIFY name##Changed)
 
 // macro creates full fledged Q_PROPERTIES with signals and slots as they are required for subobjects types and threadsafe working
 // each property has its own lock, but the object can be locked as whole, so there's a check for this object mutex on each action the property takes
@@ -222,7 +227,7 @@
 namespace ralph {
     namespace data {
 
-        /// base class for DataObjects which are comparable, cloneable, updateable, loadable, notifying and threadsafe
+        /// base class for DataObjects which are comparable, cloneable, updateable, loadable, notifying and threadsafe (dataobjects cannot have a namespace yet)
         class DataObject : public QObject
         {
             Q_OBJECT

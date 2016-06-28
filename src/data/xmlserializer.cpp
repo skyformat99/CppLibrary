@@ -1,8 +1,7 @@
-#include "serializer.h"
+#include "xmlserializer.h"
 
 namespace ralph {
     namespace data {
-
         XmlSerializer::XmlSerializer()
         {
 

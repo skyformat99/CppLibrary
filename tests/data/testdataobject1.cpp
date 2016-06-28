@@ -2,7 +2,7 @@
 
 DATAOBJECT_REGISTER(TestDataObject1)
 
-TestDataObject1::TestDataObject1() : DataObject()
+TestDataObject1::TestDataObject1() : ralph::data::DataObject()
 {
 }
 

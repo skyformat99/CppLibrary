@@ -8,17 +8,17 @@
 
 QT       -= gui
 
-TARGET = ralph-service
+TARGET = ralph-simulation-lang-ecl
 TEMPLATE = lib
 
-DEFINES += SERVICE_LIBRARY
+DEFINES += SIMULATION_LANG_ECL_LIBRARY
 
 SOURCES += 
 
 HEADERS += 
 
 DESTDIR=../../lib
-INCLUDEDIR = $${DESTDIR}/include/ralph/service/
+INCLUDEDIR = $${DESTDIR}/include/ralph/simulation/lang/ecl/
 
 unix {
     QMAKE_CXXFLAGS += -std=c++14

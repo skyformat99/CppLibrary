@@ -16,16 +16,17 @@ DEFINES += DATA_LIBRARY
 SOURCES += \
     dataobject.cpp \
     dataobjectfactory.cpp \
-    xmldataserializer.cpp \
     serializer.cpp \
-    dataexceptions.cpp
+    dataexceptions.cpp \
+    xmlserializer.cpp
 
 HEADERS += data.h\
     data_global.h \
     dataobject.h \
     dataexceptions.h \
     dataobjectfactory.h \
-    serializer.h
+    serializer.h \
+    xmlserializer.h
 
 DESTDIR=../../lib
 INCLUDEDIR = $${DESTDIR}/include/ralph/data/

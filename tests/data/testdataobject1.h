@@ -2,13 +2,11 @@
 #define TESTDATAOBJECT1_H
 
 #include <QtCore>
-#include <ralph/data/data.h>
+#include <ralph/data/dataobject.h>
 
 #include "testdataobject2.h"
 
-using namespace ralph::data;
-
-class TestDataObject1 : public DataObject
+class TestDataObject1 : public ralph::data::DataObject
 {
     Q_OBJECT
     DATAOBJECT(TestDataObject1)

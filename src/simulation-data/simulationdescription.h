@@ -1,12 +1,22 @@
 #ifndef SIMULATIONDESCRIPTION_H
 #define SIMULATIONDESCRIPTION_H
 
-#include <QObject>
+#include <QtCore>
+#include <ralph/data/dataobject.h>
 
-class SimulationDescription : public DataObject
+#include "systemmapping.h"
+
+class SimulationDescription : public ralph::data::DataObject
 {
-public:
-    SimulationDescription();
+    Q_OBJECT
+    DATAOBJECT(SimulationDescription)
+    VAL_PROPERTY(uint, obstacle, 0)
+    VAL_PROPERTY(bool, useDouble, true)
+    NREF_PROPERTY(SystemMapping, systems)
+    NREF_PROPERTY(EffectMapping, effects)
+
+    public:
+        SimulationDescription();
 };
 
 #endif // SIMULATIONDESCRIPTION_H

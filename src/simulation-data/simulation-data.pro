@@ -8,17 +8,29 @@
 
 QT       -= gui
 
-TARGET = ralph-service
+TARGET = ralph-simulation-data
 TEMPLATE = lib
 
-DEFINES += SERVICE_LIBRARY
+DEFINES += SIMULATION_DATA_LIBRARY
 
-SOURCES += 
+SOURCES += \ 
+    simulationdescription.cpp \
+    systemmapping.cpp \
+    propertyvalue.cpp \
+    effectmapping.cpp
 
-HEADERS += 
+HEADERS += \ 
+    simulationdescription.h \
+    systemmapping.h \
+    propertyvalue.h \
+    effectmapping.h
 
 DESTDIR=../../lib
-INCLUDEDIR = $${DESTDIR}/include/ralph/service/
+INCLUDEDIR = $${DESTDIR}/include/ralph/simulation/data/
+
+unix|win32: LIBS += -L$$PWD/../../lib/ -lralph-data
+
+INCLUDEPATH += $$PWD/../../lib/include/
 
 unix {
     QMAKE_CXXFLAGS += -std=c++14

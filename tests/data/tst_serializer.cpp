@@ -36,7 +36,7 @@ void SerializerTests::testXmlSerializer_serialize()
     list3.append("bli");
     dO1->set_nstrings(list3);
 
-    XmlSerializer ser;
+    ralph::data::XmlSerializer ser;
 
     QList<int> tmp1 = dO1->nints();
     QList<QVariant> tmp2 = dO1->__g_nints();
@@ -50,7 +50,7 @@ void SerializerTests::testXmlSerializer_serialize()
 
 void SerializerTests::testXmlSerializer_deserialize()
 {
-    XmlSerializer ser;
+    ralph::data::XmlSerializer ser;
 
     QSharedPointer<TestDataObject1> dO4 = ser.deserialize(testXml).objectCast<TestDataObject1>();
 

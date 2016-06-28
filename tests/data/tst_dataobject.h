@@ -7,8 +7,6 @@
 #include <ralph/data/data.h>
 #include "testdataobject1.h"
 
-using namespace ralph::data;
-
 class DataObjectTests : public QObject
 {
     Q_OBJECT
