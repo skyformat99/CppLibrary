@@ -8,21 +8,17 @@
 
 QT       -= gui
 
-TARGET = ralph-simulation
+TARGET = ralph-simulation-lang
 TEMPLATE = lib
 
-DEFINES += SIMULATION_LIBRARY
+DEFINES += SIMULATION_LANG_LIBRARY
 
-SOURCES += \ 
-    simulation.cpp
+SOURCES += 
 
-HEADERS += \ 
-    simulation.h
+HEADERS += 
 
 DESTDIR=../../lib
-INCLUDEPATH += $$PWD/../../lib/include/
-
-INCLUDEDIR = $${DESTDIR}/include/ralph/simulation/
+INCLUDEDIR = $${DESTDIR}/include/ralph/simulation/lang/
 
 unix {
     QMAKE_CXXFLAGS += -std=c++14

@@ -13,17 +13,23 @@ TEMPLATE = lib
 
 DEFINES += SIMULATION_DATA_LIBRARY
 
-SOURCES += \ 
+SOURCES += \
     simulationdescription.cpp \
     systemmapping.cpp \
     propertyvalue.cpp \
-    effectmapping.cpp
+    effectmapping.cpp \
+    effect.cpp \
+    effectscript.cpp \
+    scriptlibrary.cpp
 
-HEADERS += \ 
+HEADERS += \
     simulationdescription.h \
     systemmapping.h \
     propertyvalue.h \
-    effectmapping.h
+    effectmapping.h \
+    effect.h \
+    effectscript.h \
+    scriptlibrary.h
 
 DESTDIR=../../lib
 INCLUDEDIR = $${DESTDIR}/include/ralph/simulation/data/
